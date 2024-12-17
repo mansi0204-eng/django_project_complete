@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include "Header.html" %}
+<form method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1>User Registration</h1>
+        <table>
+              <input type="hidden" name="id" value="{{form.id}}">
+            <tr>
+                <th>First Name:</th>
+                <td><input type="text" name="firstName" value="{{form.firstName}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td><input type="text" name="lastName" value="{{form.lastName}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Login Id:</th>
+                <td><input type="text" name="loginId" value="{{form.loginId}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.loginId }}</td>
+            </tr>
+            <tr>
+                <th>Password:</th>
+                <td><input type="text" name="password" value="{{form.password}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.password }}</td>
+            </tr>
+            <tr>
+                <th>Confirm Password:</th>
+                <td><input type="text" name="confirmPassword" value="{{form.confirmPassword}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.confirmPassword }}</td>
+            </tr>
+            <tr>
+                <th>Dob:</th>
+                <td><input type="date" name="dob" value="{{form.dob}}" style="width:98%"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.dob }}</td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td><input type="text" name="address" value="{{form.address}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.address }}</td>
+            </tr>
+            <tr>
+                <th>Gender:</th>
+                <td><input type="text" name="gender" value="{{form.gender}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.gender }}</td>
+            </tr>
+            <tr>
+                <th>Mobile Number:</th>
+                <td><input type="text" name="mobileNumber" value="{{form.mobileNumber}}"></td>
+                 <td style="position: fixed; color: red;"> {{ form.inputError.mobileNumber }}</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="submit" name="signUp"></td>
+            </tr>
+
+
+        </table>
+    </div>
+</form>
+</body>
+</html>
