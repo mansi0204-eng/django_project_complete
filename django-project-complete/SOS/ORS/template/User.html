@@ -9,7 +9,7 @@
 <form method="POST">
     {% csrf_token %}
     <div align="center">
-        <h1>User Registration</h1>
+        <h1>Add User</h1>
         <table>
               <input type="hidden" name="id" value="{{form.id}}">
             <tr>
@@ -47,8 +47,8 @@
                 <td><input type="text" name="address" value="{{form.address}}" style="width:98%"></td>
                  <td style="position: fixed; color: red;"> {{ form.inputError.address }}</td>
             </tr>
-           <tr>
-                <th>Gender:</th>
+            <tr>
+           <th>Gender:</th>
                 <td>
                     <input type="radio" name="gender" value="Male" {% if form.gender == "Male" %}checked{% endif %}> Male
                     <input type="radio" name="gender" value="Female" {% if form.gender == "Female" %}checked{% endif %}> Female
@@ -65,8 +65,6 @@
                 <th></th>
                 <td><input type="submit" name="signUp"></td>
             </tr>
-
-
         </table>
     </div>
 </form>
