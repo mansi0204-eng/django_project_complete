@@ -2,11 +2,16 @@ from django.shortcuts import render
 
 from ..ctl.BaseCtl import BaseCtl
 from ..models import User
+from ..service.RoleService import RoleService
 from ..service.UserService import UserService
 from ..utility.DataValidator import DataValidator
 
 
 class UserCtl(BaseCtl):
+
+    def preload(self,request):
+        self.page_list=RoleService().preload()
+        self.preloadData=self.page_list
 
     def request_to_form(self, requestForm):
         self.form['id'] = requestForm.get('id', None)
@@ -19,10 +24,11 @@ class UserCtl(BaseCtl):
         self.form['address'] = requestForm.get('address', '')
         self.form['gender'] = requestForm.get('gender', None)
         self.form['mobileNumber'] = requestForm.get('mobileNumber', '')
-        self.form['roleId'] = 2
-        self.form['roleName'] = 'Student'
+        self.form['roleId'] = requestForm.get("roleId")
+
 
     def form_to_model(self, obj):
+        c=RoleService().get(self.form['roleId'])
         pk = int(self.form['id'])
         if pk > 0:
             obj.id = pk
@@ -36,7 +42,7 @@ class UserCtl(BaseCtl):
         obj.gender = self.form['gender']
         obj.mobileNumber = self.form['mobileNumber']
         obj.roleId = self.form['roleId']
-        obj.roleName = self.form['roleName']
+        obj.roleName = c.name
         return obj
 
     def model_to_form(self, obj):
@@ -51,8 +57,8 @@ class UserCtl(BaseCtl):
         self.form['address'] = obj.address
         self.form['gender'] = obj.gender
         self.form['mobileNumber'] = obj.mobileNumber
-        self.form['roleId'] = 2
-        self.form['roleName'] = 'Student'
+        self.form['roleId'] =obj.roleId
+        self.form['roleName'] = obj.roleName
 
     def input_validation(self):
         super().input_validation()
@@ -116,18 +122,23 @@ class UserCtl(BaseCtl):
             self.form['error'] = True
         else:
             if (DataValidator.isMobileCheck(self.form['mobileNumber'])):
-                inputError['dob'] = "Enter Correct Numerxb h3y `ytrew4t321"
+                inputError['dob'] = "Enter Correct /mobile Number "
                 self.form['error'] = True
+
+        if (DataValidator.isNull(self.form['roleId'])):
+            inputError['roleId'] = "Role Name is required"
+            self.form['error'] = True
+
         return self.form['error']
 
     def display(self, request, params={}):
-        res = render(request, self.get_template(), {'form': self.form})
+        res = render(request, self.get_template(), {'form': self.form, 'roleList':self.preloadData})
         return res
 
     def submit(self, request, params={}):
         r = self.form_to_model(User())
         self.get_service().save(r)
-        res = render(request, self.get_template(), {'form': self.form})
+        res = render(request, self.get_template(), {'form': self.form, 'roleList':self.preloadData})
         return res
 
     def get_template(self):
