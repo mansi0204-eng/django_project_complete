@@ -5,13 +5,15 @@ from ..models import User
 from ..service.RoleService import RoleService
 from ..service.UserService import UserService
 from ..utility.DataValidator import DataValidator
+from ..utility.HTMLUtility import HTMLUtility
 
 
 class UserCtl(BaseCtl):
 
     def preload(self,request):
         self.page_list=RoleService().preload()
-        self.preloadData=self.page_list
+        self.form["roleId"]=request.POST.get('roleId',0)
+        self.dynamic_preload=HTMLUtility.get_list_from_objects('roleId',self.form["roleId"], self.page_list)
 
     def request_to_form(self, requestForm):
         self.form['id'] = requestForm.get('id', None)
@@ -132,13 +134,15 @@ class UserCtl(BaseCtl):
         return self.form['error']
 
     def display(self, request, params={}):
-        res = render(request, self.get_template(), {'form': self.form, 'roleList':self.preloadData})
+        res = render(request, self.get_template(), {'form': self.form, 'role_preload':self.dynamic_preload})
         return res
 
     def submit(self, request, params={}):
         r = self.form_to_model(User())
         self.get_service().save(r)
-        res = render(request, self.get_template(), {'form': self.form, 'roleList':self.preloadData})
+        self.form['error'] = False
+        self.form['messege'] = "User Added successfully..!!"
+        res = render(request, self.get_template(), {'form': self.form, 'role_preload':self.dynamic_preload})
         return res
 
     def get_template(self):

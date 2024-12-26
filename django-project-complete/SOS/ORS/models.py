@@ -4,6 +4,12 @@ class Role(models.Model):
     name=models.CharField(max_length=100)
     description=models.CharField(max_length=100)
 
+    def get_key(self):
+        return str(self.id)
+
+    def get_value(self):
+        return self.name
+
     class Meta:
         db_table='sos_role'
 
@@ -20,6 +26,12 @@ class User(models.Model):
     mobileNumber=models.CharField(max_length=50,default='')
     roleId=models.IntegerField()
     roleName=models.CharField(max_length=50)
+
+    def get_key(self):
+        return str(self.id)
+
+    def get_value(self):
+        return self.name
 
     class Meta:
         db_table='sos_user'
