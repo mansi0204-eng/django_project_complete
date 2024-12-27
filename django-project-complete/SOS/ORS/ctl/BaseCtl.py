@@ -4,20 +4,20 @@ from django.http import HttpResponse
 
 
 class BaseCtl(ABC):
-    preload_dat={}
-    page_list={}
+    preload_data = {}
+    page_list = {}
+    dynamic_preload = {}
 
     def __init__(self):
-        self.form={}
-        self.form["id"]=0
+        self.form = {}
+        self.form["id"] = 0
         self.form["message"] = ""
         self.form["error"] = False
         self.form["inputError"] = {}
         self.form["pageNo"] = 1
 
-    def preload(self,request):
+    def preload(self, request):
         pass
-
 
     def execute(self, request, params={}):
         self.preload(request)
@@ -28,11 +28,17 @@ class BaseCtl(ABC):
             if self.input_validation():
                 return self.display(request, params)
             else:
-                return self.submit(request, params)
+                if (request.POST.get("operation") == "delete"):
+                    return self.deleteRecord(request, params)
+                elif (request.POST.get("operation") == "next"):
+                    return self.next(request, params)
+                elif (request.POST.get("operation") == "previous"):
+                    return self.previous(request, params)
+                else:
+                    return self.submit(request, params)
         else:
             message = "Request is not supported"
             return HttpResponse(message)
-
 
     @abstractmethod
     def display(self, request, params={}):
@@ -62,4 +68,3 @@ class BaseCtl(ABC):
     @abstractmethod
     def get_service(self):
         pass
-

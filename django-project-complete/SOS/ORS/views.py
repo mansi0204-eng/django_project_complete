@@ -6,6 +6,7 @@ from .ctl.LoginCtl import LoginCtl
 from .ctl.WelcomeCtl import WelcomeCtl
 from .ctl.UserCtl import UserCtl
 from .ctl.RoleCtl import RoleCtl
+from .ctl.UserListCtl import UserListCtl
 
 @csrf_exempt
 def action(request,page):
