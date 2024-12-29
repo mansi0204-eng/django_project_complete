@@ -6,10 +6,11 @@
 </head>
 <body>
 {% include "Header.html" %}
-<form method="POST">
+<form action="/User/" method="POST">
     {% csrf_token %}
     <div align="center">
         <h1>Add User</h1>
+        <h3><font color="green">{{ form.message}}</font></h3>
         <table>
             <input type="hidden" name="id" value="{{form.id}}">
             <tr>

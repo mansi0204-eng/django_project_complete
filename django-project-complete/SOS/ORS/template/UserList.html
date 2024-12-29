@@ -48,7 +48,7 @@
             <td align="center">{{ l.address }}</td>
             <td align="center">{{ l.gender }}</td>
             <td align="center">{{ l.mobileNumber }}</td>
-            <td align="center"><a href="/ORS/User/Edit/{{ e.id }}">edit</a></td>
+            <td align="center"><a href="/User/Edit/{{ l.id }}">edit</a></td>
         </tr>
         {% endfor %}
     </table>
@@ -59,7 +59,7 @@
                 <input type="submit" name="operation" value="previous" {% if form.pageNo == 1 %} disabled {% endif %}>
             </td>
             <td style="width: 30%">
-                <button><a href="/ORS/User">add</a></button>
+                <button><a href="/User">add</a></button>
             </td>
             <td style="width: 25%"><input type="submit" name="operation"
                                           value="delete"></td>

@@ -1,3 +1,6 @@
+from multiprocessing.reduction import duplicate
+
+from django.db.models.expressions import result
 from django.shortcuts import render
 
 from ..ctl.BaseCtl import BaseCtl
@@ -10,10 +13,13 @@ from ..utility.HTMLUtility import HTMLUtility
 
 class UserCtl(BaseCtl):
 
-    def preload(self,request):
-        self.page_list=RoleService().preload()
-        self.form["roleId"]=request.POST.get('roleId',0)
-        self.dynamic_preload=HTMLUtility.get_list_from_objects('roleId',self.form["roleId"], self.page_list)
+    def preload(self, request, params):
+        self.form["roleId"] = request.POST.get('roleId', 0)
+        if (params['id'] > 0):
+            obj = self.get_service().get(params['id'])
+            self.form["roleId"] = obj.roleId
+        self.page_list = RoleService().preload()
+        self.dynamic_preload = HTMLUtility.get_list_from_objects('roleId', self.form["roleId"], self.page_list)
 
     def request_to_form(self, requestForm):
         self.form['id'] = requestForm.get('id', None)
@@ -28,9 +34,8 @@ class UserCtl(BaseCtl):
         self.form['mobileNumber'] = requestForm.get('mobileNumber', '')
         self.form['roleId'] = requestForm.get("roleId")
 
-
     def form_to_model(self, obj):
-        c=RoleService().get(self.form['roleId'])
+        c = RoleService().get(self.form['roleId'])
         pk = int(self.form['id'])
         if pk > 0:
             obj.id = pk
@@ -48,7 +53,7 @@ class UserCtl(BaseCtl):
         return obj
 
     def model_to_form(self, obj):
-        if obj is None:
+        if (obj == None):
             return
         self.form['firstName'] = obj.firstName
         self.form['lastName'] = obj.lastName
@@ -59,7 +64,7 @@ class UserCtl(BaseCtl):
         self.form['address'] = obj.address
         self.form['gender'] = obj.gender
         self.form['mobileNumber'] = obj.mobileNumber
-        self.form['roleId'] =obj.roleId
+        self.form['roleId'] = obj.roleId
         self.form['roleName'] = obj.roleName
 
     def input_validation(self):
@@ -134,16 +139,45 @@ class UserCtl(BaseCtl):
         return self.form['error']
 
     def display(self, request, params={}):
-        res = render(request, self.get_template(), {'form': self.form, 'role_preload':self.dynamic_preload})
+
+        if (params['id'] > 0):
+            obj = self.get_service().get(params['id'])
+            self.model_to_form(obj)
+
+        res = render(request, self.get_template(), {'form': self.form, 'role_preload': self.dynamic_preload})
         return res
 
     def submit(self, request, params={}):
-        r = self.form_to_model(User())
-        self.get_service().save(r)
-        self.form['error'] = False
-        self.form['messege'] = "User Added successfully..!!"
-        res = render(request, self.get_template(), {'form': self.form, 'role_preload':self.dynamic_preload})
-        return res
+        if (params['id'] > 0):
+            pk = params['id']
+            dup = self.get_service().get_model().objects.exclude(id=pk).filter(loginId=self.form["loginId"])
+            if dup.count() > 0:
+                self.form['error'] = True
+                self.form['message'] = "Login ID already exist"
+                res = render(request, self.get_template(), {'form': self.form, 'role_preload': self.dynamic_preload})
+            else:
+                r = self.form_to_model(User())
+                self.get_service().save(r)
+                self.form['id'] = r.id
+
+                self.form['error'] = False
+                self.form['message'] = "Data updated successfully"
+                res = render(request, self.get_template(), {'form': self.form, 'role_preload': self.dynamic_preload})
+        else:
+            duplicate = self.get_service().get_model().objects.filter(loginId=self.form['loginID'])
+            if duplicate.count() > 0:
+                self.form['error'] = True
+                self.form['message'] = "Login Id already exist"
+                res = render(request, self.get_template(), {'form': self.form, 'role_preload': self.dynamic_preload})
+            else:
+                r = self.form_to_model(User())
+                self.get_service().save(r)
+                self.form['id'] = r.id
+
+                self.form['error'] = False
+                self.form['messege'] = "User Added successfully..!!"
+                res = render(request, self.get_template(), {'form': self.form, 'role_preload': self.dynamic_preload})
+            return res
 
     def get_template(self):
         return "User.html"
