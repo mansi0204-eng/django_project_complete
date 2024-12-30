@@ -1,18 +1,22 @@
-from django.db import connection
 from ..models import User
-from .BaseService import BaseService
 from ..utility.DataValidator import DataValidator
+from .BaseService import BaseService
+from django.db import connection
 
 
 class UserService(BaseService):
     def authenticate(self, params):
         loginId = params.get("loginId", None)
         password = params.get("password", None)
+
         q = self.get_model().objects.filter()
+
         if (DataValidator.isNotNull(loginId)):
             q = q.filter(loginId=loginId)
+
         if (DataValidator.isNotNull(password)):
             q = q.filter(password=password)
+
         if (q.count() == 1):
             return q[0]
         else:

@@ -1,23 +1,25 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .BaseCtl import BaseCtl
+from ..utility.DataValidator import DataValidator
 from ..models import User
 from ..service.UserService import UserService
-from ..utility.DataValidator import DataValidator
+from ..service.RoleService import RoleService
 
 
 class RegistrationCtl(BaseCtl):
+
     def request_to_form(self, requestForm):
-        self.form['id'] = requestForm.get('id', None)
-        self.form['firstName'] = requestForm.get('firstName', '')
-        self.form['lastName'] = requestForm.get('lastName', '')
-        self.form['loginId'] = requestForm.get('loginId', '')
-        self.form['password'] = requestForm.get('password', '')
-        self.form['confirmPassword'] = requestForm.get('confirmPassword', '')
-        self.form['dob'] = requestForm.get('dob', '')
-        self.form['address'] = requestForm.get('address', '')
-        self.form['gender'] = requestForm.get('gender', None)
-        self.form['mobileNumber'] = requestForm.get('mobileNumber', '')
+        self.form['id'] = requestForm['id']
+        self.form['firstName'] = requestForm['firstName']
+        self.form['lastName'] = requestForm['lastName']
+        self.form['loginId'] = requestForm['loginId']
+        self.form['password'] = requestForm['password']
+        self.form['confirmPassword'] = requestForm['confirmPassword']
+        self.form['dob'] = requestForm['dob']
+        self.form['address'] = requestForm['address']
+        self.form['gender'] = requestForm['gender']
+        self.form['mobileNumber'] = requestForm['mobileNumber']
         self.form['roleId'] = 2
         self.form['roleName'] = 'Student'
 
@@ -47,7 +49,7 @@ class RegistrationCtl(BaseCtl):
         self.form["loginId"] = obj.loginId
         self.form["password"] = obj.password
         self.form["confirmPassword"] = obj.confirmPassword
-        self.form["dob"] = obj.dob
+        self.form["dob"] = obj.dob.strftime("%Y-%m-%d")
         self.form["address"] = obj.address
         self.form["gender"] = obj.gender
         self.form["mobileNumber"] = obj.mobileNumber
@@ -57,47 +59,45 @@ class RegistrationCtl(BaseCtl):
     def input_validation(self):
         super().input_validation()
         inputError = self.form['inputError']
-
         if (DataValidator.isNull(self.form['firstName'])):
             inputError['firstName'] = "First Name is required"
             self.form['error'] = True
         else:
-            if (DataValidator.isAlphaCheck(self.form['firstName'])):
-                inputError['firstName'] = "First Name only contains Letters"
+            if (DataValidator.isalphacehck(self.form['firstName'])):
+                inputError['firstName'] = "First Name contains only letters"
                 self.form['error'] = True
 
         if (DataValidator.isNull(self.form['lastName'])):
             inputError['lastName'] = "Last Name is required"
             self.form['error'] = True
         else:
-            if (DataValidator.isAlphaCheck(self.form['lastName'])):
-                inputError['firstName'] = "Last Name only contains Letters"
+            if (DataValidator.isalphacehck(self.form['lastName'])):
+                inputError['lastName'] = "Last Name contains only letters"
                 self.form['error'] = True
 
-        if (DataValidator.isNull(self.form['loginId'])):
-            inputError['loginId'] = "Login Id is required"
-            self.form['error'] = True
+        if (DataValidator.isNull(self.form["loginId"])):
+            inputError["loginId"] = "Login ID is required"
+            self.form["error"] = True
         else:
-            if (DataValidator.isEmail(self.form['loginId'])):
-                inputError['loginId'] = "Login ID must be in correct way ex-abc@gmail.com"
+            if (DataValidator.isemail(self.form['loginId'])):
+                inputError['loginId'] = "login ID must be like student@gmail.com"
                 self.form['error'] = True
 
         if (DataValidator.isNull(self.form['password'])):
             inputError['password'] = "Password is required"
             self.form['error'] = True
 
-        if(DataValidator.isNull(self.form['confirmPassword'])):
-            inputError['confirmPassword']="confirm password is required"
-            self.form['error']=True
-        else:
-            if(DataValidator.isNotNull(self.form['confirmPassword'])):
-                if self.form['password']!=self.form['confirmPassword']:
-                    inputError['confirmPassword']="Password and Confirm password must be same"
-                    self.form['error']=True
-
-        if (DataValidator.isNull(self.form['dob'])):
-            inputError['dob'] = "DOB is required"
+        if (DataValidator.isNull(self.form['confirmPassword'])):
+            inputError['confirmPassword'] = "Confirm Passsword is required"
             self.form['error'] = True
+        if (DataValidator.isNotNull(self.form['confirmPassword'])):
+            if self.form['password'] != self.form['confirmPassword']:
+                inputError['confirmPassword'] = "Password and Confirmpassword are not same"
+                self.form['error'] = True
+
+        if (DataValidator.isNull(self.form["dob"])):
+            inputError["dob"] = "DOB is required"
+            self.form["error"] = True
         else:
             if (DataValidator.isDate(self.form['dob'])):
                 inputError['dob'] = "Incorrect Date, should be YYYY-MM-DD"
@@ -115,20 +115,20 @@ class RegistrationCtl(BaseCtl):
             inputError['mobileNumber'] = "Mobile Number is required"
             self.form['error'] = True
         else:
-            if (DataValidator.isMobileCheck(self.form['mobileNumber'])):
+            if (DataValidator.ismobilecheck(self.form['mobileNumber'])):
                 inputError['mobileNumber'] = "Enter Correct Mobile No."
                 self.form['error'] = True
         return self.form['error']
 
-
-
     def display(self, request, params={}):
-        res = render(request, self.get_template(), {'form': self.form})
+        res = render(request, self.get_template(), {"form": self.form})
         return res
 
     def submit(self, request, params={}):
         r = self.form_to_model(User())
         self.get_service().save(r)
+        self.form['error'] = False
+        self.form['message'] = "User Registration successfully..!!"
         res = render(request, self.get_template(), {'form': self.form})
         return res
 

@@ -1,12 +1,12 @@
-from abc import ABC, abstractmethod
-
 from django.http import HttpResponse
+from abc import ABC, abstractmethod
 
 
 class BaseCtl(ABC):
     preload_data = {}
-    page_list = {}
+    
     dynamic_preload = {}
+    page_list = {}
 
     def __init__(self):
         self.form = {}
@@ -20,7 +20,7 @@ class BaseCtl(ABC):
         pass
 
     def execute(self, request, params={}):
-        self.preload(request, params)
+        self.preload(request,params)
         if "GET" == request.method:
             return self.display(request, params)
         elif "POST" == request.method:
@@ -28,12 +28,12 @@ class BaseCtl(ABC):
             if self.input_validation():
                 return self.display(request, params)
             else:
-                if (request.POST.get("operation") == "delete"):
-                    return self.deleteRecord(request, params)
-                elif (request.POST.get("operation") == "next"):
-                    return self.next(request, params)
-                elif (request.POST.get("operation") == "previous"):
-                    return self.previous(request, params)
+                if (request.POST.get("operation")=="delete"):
+                    return self.deleteRecord(request,params)
+                elif (request.POST.get("operation")=="next"):
+                    return self.next(request,params)
+                elif (request.POST.get("operation")=="previous"):
+                    return self.previous(request,params)
                 else:
                     return self.submit(request, params)
         else:

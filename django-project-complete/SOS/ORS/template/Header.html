@@ -5,17 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-{% if request.session.user == None%}
-<h3>Hi, guest</h3>
-<a href="/Welcome/"><b>Welcome</b></a>&nbsp; | &nbsp;
+{% if request.session.user == None %}
+<h3>Hi, Guest</h3>
+<a href="/Welcome/"><b>Welcome</b></a> |
 <a href="/Login/"><b>Login</b></a>
-<hr>
 {% else %}
-<h3>Hi,{{request.session.user}}</h3>
-<a href="/User/"><b>Add User</b></a>&nbsp; | &nbsp;
-<a href="/UserList/"><b>User List</b></a>&nbsp; | &nbsp;
+<h3>Hi, {{request.session.user}}</h3>
+<a href="/User/"><b>Add User</b></a> |
+<a href="/UserList/"><b>User List</b></a> |
 <a href="/auth/Logout/"><b>Logout</b></a>
-<hr>
 {% endif %}
+<hr>
 </body>
 </html>
