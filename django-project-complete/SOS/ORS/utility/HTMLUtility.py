@@ -11,7 +11,7 @@ class HTMLUtility:
         sb.append("\n<option selected value=''>-----------Select-----------</option>")
 
         for key, val in data_dict.items():
-            if key.strip() == selected_val:
+            if key == selected_val:
                 sb.append(f"\n<option selected value='{key}'>{val}</option>")
             else:
                 sb.append(f"\n<option value='{key}'>{val}</option>")
