@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from .BaseCtl import BaseCtl
 from ..models import User
@@ -38,6 +37,10 @@ class UserListCtl(BaseCtl):
         self.page_list = records['data']
         self.form['lastId'] = User.objects.last().id
         res = render(request, self.get_template(), {'pageList': self.page_list, 'form': self.form})
+        return res
+
+    def new(self, request, params={}):
+        res = redirect("/ORS/User/")
         return res
 
     def deleteRecord(self, request, params={}):

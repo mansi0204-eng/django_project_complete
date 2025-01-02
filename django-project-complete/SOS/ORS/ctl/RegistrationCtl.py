@@ -5,9 +5,18 @@ from ..utility.DataValidator import DataValidator
 from ..models import User
 from ..service.UserService import UserService
 from ..service.RoleService import RoleService
+from ..utility.HTMLUtility import HTMLUtility
 
 
 class RegistrationCtl(BaseCtl):
+
+    def preload(self, request, params):
+        self.form["gender"] = request.POST.get('gender', '')
+        if (params['id'] > 0):
+            obj = self.get_service().get(params['id'])
+            self.form["gender"] = obj.gender
+        gender_dict = {"Male": "Male", "Female": "Female"}
+        self.static_preload = HTMLUtility.get_list_from_dict('gender', self.form["gender"], gender_dict)
 
     def request_to_form(self, requestForm):
         self.form['id'] = requestForm['id']
@@ -63,7 +72,7 @@ class RegistrationCtl(BaseCtl):
             inputError['firstName'] = "First Name is required"
             self.form['error'] = True
         else:
-            if (DataValidator.isalphacehck(self.form['firstName'])):
+            if (DataValidator.isAlphaCheck(self.form['firstName'])):
                 inputError['firstName'] = "First Name contains only letters"
                 self.form['error'] = True
 
@@ -71,7 +80,7 @@ class RegistrationCtl(BaseCtl):
             inputError['lastName'] = "Last Name is required"
             self.form['error'] = True
         else:
-            if (DataValidator.isalphacehck(self.form['lastName'])):
+            if (DataValidator.isAlphaCheck(self.form['lastName'])):
                 inputError['lastName'] = "Last Name contains only letters"
                 self.form['error'] = True
 
@@ -79,7 +88,7 @@ class RegistrationCtl(BaseCtl):
             inputError["loginId"] = "Login ID is required"
             self.form["error"] = True
         else:
-            if (DataValidator.isemail(self.form['loginId'])):
+            if (DataValidator.isEmail(self.form['loginId'])):
                 inputError['loginId'] = "login ID must be like student@gmail.com"
                 self.form['error'] = True
 
@@ -115,13 +124,13 @@ class RegistrationCtl(BaseCtl):
             inputError['mobileNumber'] = "Mobile Number is required"
             self.form['error'] = True
         else:
-            if (DataValidator.ismobilecheck(self.form['mobileNumber'])):
+            if (DataValidator.isMobileCheck(self.form['mobileNumber'])):
                 inputError['mobileNumber'] = "Enter Correct Mobile No."
                 self.form['error'] = True
         return self.form['error']
 
     def display(self, request, params={}):
-        res = render(request, self.get_template(), {"form": self.form})
+        res = render(request, self.get_template(),{'form': self.form,  'gender_preload': self.static_preload})
         return res
 
     def submit(self, request, params={}):
@@ -129,7 +138,7 @@ class RegistrationCtl(BaseCtl):
         self.get_service().save(r)
         self.form['error'] = False
         self.form['message'] = "User Registration successfully..!!"
-        res = render(request, self.get_template(), {'form': self.form})
+        res = render(request, self.get_template(),{'form': self.form,  'gender_preload': self.static_preload})
         return res
 
     def get_template(self):
