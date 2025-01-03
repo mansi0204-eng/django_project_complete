@@ -7,6 +7,7 @@ from .ctl.LoginCtl import LoginCtl
 from .ctl.WelcomeCtl import WelcomeCtl
 from .ctl.UserCtl import UserCtl
 from .ctl.UserListCtl import UserListCtl
+from .ctl.ForgetPasswordCtl import ForgetPasswordCtl
 
 
 @csrf_exempt
