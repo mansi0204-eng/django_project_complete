@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+     {% load static %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'js/checkbox.js' %}"></script>
 </head>
 <body>
 {% if request.session.user == None %}

@@ -8,7 +8,7 @@ class FrontCtlMiddleware:
         self.form={}
 
     def __call__(self, request):
-        if request.path_info in['/', '/Login/', '/Registration', '/Welcome/', '/Logout/','/ForgetPassword/']:
+        if request.path_info in['/', '/Login/', '/Registration/', '/Welcome/', '/Logout/','/ForgetPassword/']:
           return self.get_response(request)
 
         if request.session.get('user')==None:

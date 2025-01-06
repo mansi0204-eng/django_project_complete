@@ -24,6 +24,7 @@
     <br>
     <table border="1%" width="100%">
         <tr>
+            <th><input type="checkbox" id="selectall"></th>
             <th>Select</th>
             <th>S. No.</th>
             <th>First Name</th>
@@ -38,7 +39,8 @@
         </tr>
         {% for l in pageList %}
         <tr>
-            <td align="center"><input type="checkbox" name="ids" value="{{ l.id }}"></td>
+            <td align="center"><input type="checkbox" class="case" name="ids" value="{{ l.id }}"></td>
+            <td align="center">{{ l.id }}</td>
             <td align="center">{{ l.id }}</td>
             <td align="center">{{ l.firstName }}</td>
             <td align="center">{{ l.lastName }}</td>
