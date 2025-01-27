@@ -40,7 +40,7 @@ class UserListCtl(BaseCtl):
         return res
 
     def new(self, request, params={}):
-        res = redirect("/ORS/User/")
+        res = redirect("/User/")
         return res
 
     def deleteRecord(self, request, params={}):

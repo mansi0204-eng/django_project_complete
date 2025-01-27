@@ -8,6 +8,7 @@ from .ctl.WelcomeCtl import WelcomeCtl
 from .ctl.UserCtl import UserCtl
 from .ctl.UserListCtl import UserListCtl
 from .ctl.ForgetPasswordCtl import ForgetPasswordCtl
+from .ctl.AttributeCtl import AttributeCtl
 
 
 @csrf_exempt

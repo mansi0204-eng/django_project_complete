@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+{% include "Header.html" %}
+<form action="/Attribute/" method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1>Add Attribute</h1>
+        <table>
+            <input type="hidden" name="id" value="{{form.id}}">
+            <tr>
+                <th>Display:</th>
+                <td><input type="text" name="display" value="{{form.display}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.display}}</td>
+            </tr>
+            <tr>
+                <th>Data Type:</th>
+                <td><input type="text" name="datatype" value="{{form.datatype}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.datatype}}</td>
+            </tr>
+            <tr>
+                <th>Description:</th>
+                <td><input type="text" name="description" value="{{form.description}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.description}}</td>
+            </tr>
+            <tr>
+                <th>isActive:</th>
+                <td>
+                    {{form.preload.isActive|safe}}
+                </td>
+                <td style="position:fixed; color:red">{{form.inputError.isActive}}</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="submit" value="save"></td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>

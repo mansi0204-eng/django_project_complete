@@ -52,8 +52,9 @@ class DataValidator:
         else:
             return True
 
+
     @classmethod
-    def isMobileCheck(self,val):
+    def isMobileCheck(self, val):
         if re.match("^[6-9]\d{9}$", val):
             return False
         else:
