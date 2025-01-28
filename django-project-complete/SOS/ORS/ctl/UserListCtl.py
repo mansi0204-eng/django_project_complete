@@ -56,7 +56,7 @@ class UserListCtl(BaseCtl):
                     self.form['message'] = "Data has been deleted successfully"
                 else:
                     self.form['error'] = True
-                    self.form['message'] = "Data was not deleted"
+                    self.form['message'] = "Data is not deleted"
 
         self.form['pageNo'] = 1
         records = self.get_service().search(self.form)
