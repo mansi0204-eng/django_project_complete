@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.template.loader import get_template
 
-from SOS.ORS.ctl.BaseCtl import BaseCtl
-from SOS.ORS.utility.DataValidator import DataValidator
-from SOS.ORS.utility.HTMLUtility import HTMLUtility
+from .BaseCtl import BaseCtl
+from ..models import Initiative
+from ..service.InitiativeService import InitiativeService
+from ..utility.DataValidator import DataValidator
+from ..utility.HTMLUtility import HTMLUtility
 
 
 class InitiativeCtl(BaseCtl):
@@ -88,9 +90,19 @@ class InitiativeCtl(BaseCtl):
         if(params['id']>0):
             obj=self.get_service().get(params['id'])
             self.model_to_form(obj)
-        res= render(request,get_template(),{'form':self.form})
+        res= render(request,self.get_template(),{'form':self.form})
         return res
 
     def submit(self, request, params={}):
-        r=self.form_to_model()
+        r=self.form_to_model(Initiative())
+        self.get_service().save(r)
+        self.form['message']="Data Save successfully"
+        res = render(request, self.get_template(), {'form': self.form})
+        return res
+
+    def get_template(self):
+        return "Initiative.html"
+
+    def get_service(self):
+        return InitiativeService()
 

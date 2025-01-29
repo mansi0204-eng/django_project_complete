@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Initiative</title>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+{% include "Header.html" %}
+<form action="/Initiative/" method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1>Add Initiative</h1>
+        <h3><font color="green">{{ form.message }}</font> </h3>
+        <table>
+            <input type="hidden" name="id" value="{{form.id}}">
+            <tr>
+                <th>Initiative Name:</th>
+                <td><input type="text" name="initiativeName" value="{{form.initiativeName}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.initiativeName}}</td>
+            </tr>
+            <tr>
+                <th>Type:</th>
+                <td>{{form.preload.type|safe}}</td>
+                <td style="position:fixed; color:red">{{form.inputError.type}}</td>
+            </tr>
+            <tr>
+                <th>Start Date:</th>
+                <td><input type="date" name="startDate" value="{{form.startDate}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.startDate}}</td>
+            </tr>
+            <tr>
+                <th>Version:</th>
+                <td><input type="text" name="version" value="{{form.version}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.version}}</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="submit" value="save"></td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>
