@@ -11,6 +11,7 @@ from .ctl.ForgetPasswordCtl import ForgetPasswordCtl
 from .ctl.AttributeCtl import AttributeCtl
 from .ctl.AttributeListCtl import AttributeListCtl
 from .ctl.InitiativeCtl import InitiativeCtl
+from .ctl.InitiativeListCtl import InitiativeListCtl
 
 
 @csrf_exempt
