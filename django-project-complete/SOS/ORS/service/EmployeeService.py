@@ -18,7 +18,7 @@ class EmployeeService(BaseService):
         print("--------", sql, pageNo, self.pageSize)
         cursor.execute(sql, [pageNo, self.pageSize])
         result = cursor.fetchall()
-        columnName = ("id", "fullName", "userName", "birthDate", "contactNumber")
+        columnName = ("id", "fullName", "userName","password", "birthDate", "contactNumber")
 
         res = {
             "data": [],

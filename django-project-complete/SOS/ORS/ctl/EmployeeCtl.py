@@ -14,7 +14,7 @@ class EmployeeCtl(BaseCtl):
         self.form['id'] = requestForm['id']
         self.form['fullName'] = requestForm['fullName']
         self.form['userName'] = requestForm['userName']
-        # self.form['password'] = requestForm['password']
+        self.form['password'] = requestForm['password']
         self.form['birthDate'] = requestForm['birthDate']
         self.form['contactNumber'] = requestForm['contactNumber']
 
@@ -24,7 +24,7 @@ class EmployeeCtl(BaseCtl):
             obj.id = pk
         obj.fullName = self.form['fullName']
         obj.userName = self.form['userName']
-        # obj.password = self.form['password']
+        obj.password = self.form['password']
         obj.birthDate = self.form['birthDate']
         obj.contactNumber = self.form['contactNumber']
         return obj
@@ -58,6 +58,10 @@ class EmployeeCtl(BaseCtl):
             if (DataValidator.isEmail(self.form['userName'])):
                 inputError['userName'] = "Login ID must be like student@gmail.com"
                 self.form['error'] = True
+
+        if (DataValidator.isNull(self.form['password'])):
+            inputError['password'] = "password is Required"
+            self.form['error'] = True
 
         if (DataValidator.isNull(self.form["birthDate"])):
             inputError["birthDate"] = "birth date can not be null"

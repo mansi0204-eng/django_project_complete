@@ -26,6 +26,11 @@
                 <td style="position: fixed; color: red">{{ form.inputError.userName }}</td>
             </tr>
             <tr>
+                <th>Password:</th>
+                <td><input type="text" name="password" value="{{form.password}}"></td>
+                <td style="position: fixed; color: red">{{ form.inputError.password }}</td>
+            </tr>
+            <tr>
                 <th>Birth Date:</th>
                 <td><input type="date" name="birthDate" value="{{form.birthDate}}"></td>
                 <td style="position:fixed; color:red">{{form.inputError.birthDate}}</td>
