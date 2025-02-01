@@ -12,6 +12,7 @@ from .ctl.AttributeCtl import AttributeCtl
 from .ctl.AttributeListCtl import AttributeListCtl
 from .ctl.InitiativeCtl import InitiativeCtl
 from .ctl.InitiativeListCtl import InitiativeListCtl
+from .ctl.EmployeeCtl import EmployeeCtl
 
 
 @csrf_exempt

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    {% load static %}
+     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+{% include "Header.html" %}
+<form action="/Employee/" method="POST">
+    {% csrf_token %}
+    <div align="center">
+        <h1>Add Employee</h1>
+        <h3><font color="green">{{ form.message }}</font></h3>
+        <table>
+            <input type="hidden" name="id" value="{{form.id}}">
+            <tr>
+                <th>Full Name:</th>
+                <td><input type="text" name="fullName" value="{{form.fullName}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.fullName}}</td>
+            </tr>
+            <tr>
+                <th>User Name:</th>
+                <td><input type="email" name="userName" value="{{form.userName}}"></td>
+                <td style="position: fixed; color: red">{{ form.inputError.userName }}</td>
+            </tr>
+            <tr>
+                <th>Birth Date:</th>
+                <td><input type="date" name="birthDate" value="{{form.birthDate}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.birthDate}}</td>
+            </tr>
+            <tr>
+                <th>Contact Number:</th>
+                <td><input type="text" name="contactNumber" value="{{form.contactNumber}}"></td>
+                <td style="position:fixed; color:red">{{form.inputError.contactNumber}}</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="submit" value="save"></td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>

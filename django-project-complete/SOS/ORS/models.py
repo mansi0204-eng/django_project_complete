@@ -72,6 +72,7 @@ class Initiative(models.Model):
 class Employee(models.Model):
     fullName=models.CharField(max_length=50)
     userName=models.EmailField()
+
     birthDate=models.DateField(max_length=30)
     contactNumber=models.CharField(max_length=15, default='')
 
