@@ -95,4 +95,20 @@ class Client(models.Model):
     class Meta:
         db_table='sos_client'
 
+class Physician(models.Model):
+    fullName = models.CharField(max_length=50)
+    birthDate=models.DateField(max_length=50)
+    contactNumber=models.CharField(max_length=15)
+    specialization=models.CharField(max_length=60)
+
+    def get_key(self):
+        return str(self.id)
+
+    def get_value(self):
+        return  self.specialization
+
+    class Meta:
+        db_table='sos_physician'
+
+
 
