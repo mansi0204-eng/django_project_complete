@@ -76,12 +76,23 @@ class Employee(models.Model):
     birthDate=models.DateField(max_length=30)
     contactNumber=models.CharField(max_length=15, default='')
 
+    class Meta:
+        db_table='sos_employee'
+
+
+class Client(models.Model):
+    fullName=models.CharField(max_length=50)
+    appointmentDate=models.DateField(max_length=50)
+    contactNumber=models.CharField(max_length=15)
+    illness=models.CharField(max_length=50)
+
     def get_key(self):
         return str(self.id)
 
     def get_value(self):
-        return self.fullName
+        return  self.illness
 
     class Meta:
-        db_table='sos_employee'
+        db_table='sos_client'
+
 
