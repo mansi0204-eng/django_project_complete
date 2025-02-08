@@ -17,7 +17,7 @@ class ClientService(BaseService):
         print("--------", sql, pageNo, self.pageSize)
         cursor.execute(sql, [pageNo, self.pageSize])
         result = cursor.fetchall()
-        columnName = ('id', 'fullName', 'AppointmentDate', 'contactNumber', 'illness')
+        columnName = ('id', 'fullName', 'appointmentDate', 'contactNumber', 'illness')
         res = {
             "data": [],
         }
